@@ -19,13 +19,15 @@ def get_all_elements():
 
 def create_app():
     element_names = get_all_elements()
-    # Available themes
-    themes = {
-        "BOOTSTRAP": dbc.themes.BOOTSTRAP,
-        "SKETCHY": dbc.themes.SKETCHY,
+    themess = [
+        theme for theme in dir(dbc.themes)
+        if not theme.startswith("_")
+    ]   
 
-    }
-
+    themes = {}
+    for theme in themess:
+        themes[f"{theme}"] = eval(f"dbc.themes.{theme}")
+    
     app = Dash(
         __name__,
         external_stylesheets=[dbc.themes.BOOTSTRAP]
@@ -113,4 +115,3 @@ def run_dash_app(app):
 if __name__ == "__main__":
     app = create_app()
     run_dash_app(app)
-
